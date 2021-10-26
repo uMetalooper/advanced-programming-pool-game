@@ -23,6 +23,21 @@ extern vec2	gPlaneNormal_Right;
 extern vec2	gPlaneNormal_Bottom;
 
 /*-----------------------------------------------------------
+  cushion class
+  -----------------------------------------------------------*/
+
+class cushion
+{
+	vec2 position;
+	vec2 normalVector;
+public:
+	cushion(vec2 pos, vec2 normal);
+	vec2 getNormalVector();
+	vec2 getPosition();
+	//~cushion();
+};
+
+/*-----------------------------------------------------------
   ball class
   -----------------------------------------------------------*/
 
@@ -46,6 +61,7 @@ public:
 	void DoBallCollision(ball &b);
 	void Update(int ms);
 	
+	bool HasHitPlane(cushion& p);
 	bool HasHitPlane1(void) const;
 	bool HasHitPlane2(void) const;
 	bool HasHitPlane3(void) const;

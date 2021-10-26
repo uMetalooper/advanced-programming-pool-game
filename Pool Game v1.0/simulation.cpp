@@ -4,6 +4,9 @@
 #include"stdafx.h"
 #include"simulation.h"
 
+#include<iostream>
+using namespace std;
+
 /*-----------------------------------------------------------
   macros
   -----------------------------------------------------------*/
@@ -16,6 +19,9 @@ vec2	gPlaneNormal_Left(1.0,0.0);
 vec2	gPlaneNormal_Top(0.0,1.0);
 vec2	gPlaneNormal_Right(-1.0,0.0);
 vec2	gPlaneNormal_Bottom(0.0,-1.0);
+
+vec2 leftPosition(-TABLE_X, 0);
+cushion PlaneLeft(leftPosition, gPlaneNormal_Left);
 
 table gTable;
 
@@ -79,6 +85,8 @@ void ball::ApplyFrictionForce(int ms)
 
 void ball::DoPlaneCollisions(void)
 {
+	if (HasHitPlane(PlaneLeft))
+		cout << "Hit plane Left";
 	//test each plane for collision
 	if(HasHitPlane1()) HitPlane1();
 	if(HasHitPlane2()) HitPlane2();
@@ -99,6 +107,25 @@ void ball::Update(int ms)
 	position += ((velocity * ms)/1000.0f);
 	//set small velocities to zero
 	if(velocity.Magnitude()<SMALL_VELOCITY) velocity = 0.0;
+}
+
+bool ball::HasHitPlane(cushion& p)
+{
+	// if moving away from plane, cannot hit
+	// LOGIC: if dot product between the plane's normal vector
+	// and the velocity of the ball is non-negative, the ball will
+	// move away from the plane
+	// NOTE: because of the logic, we need to make sure the plane's normal
+	// vector point inward into the board
+	vec2 pNormalVector = p.getNormalVector();
+	if (velocity.Dot(pNormalVector) >= 0.0) return false;
+	// Distance from the ball to the plane
+	vec2 relPos = position - p.getPosition();
+	vec2 perp = pNormalVector*(relPos.Dot(pNormalVector) / pNormalVector.Dot(pNormalVector));
+	double distance = perp.Magnitude();
+	cout << "Distance between the ball and the plane is: " << distance << endl;
+	if (distance > radius) return false;
+	return true;
 }
 
 bool ball::HasHitPlane1(void) const
@@ -242,4 +269,20 @@ bool table::AnyBallsMoving(void) const
 		if(balls[i].velocity(1)!=0.0) return true;
 	}
 	return false;
+}
+
+cushion::cushion(vec2 pos, vec2 normal)
+{
+	position = pos;
+	normalVector = normal;
+}
+
+vec2 cushion::getNormalVector()
+{
+	return normalVector;
+}
+
+vec2 cushion::getPosition()
+{
+	return position;
 }

@@ -42,9 +42,4 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="glut32.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>
