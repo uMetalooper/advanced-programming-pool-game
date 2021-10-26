@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "stdafx.h"
-#include<glut.h>
+#include<GLUT/glut.h>
 #include<math.h>
 #include"simulation.h"
 
@@ -420,9 +420,9 @@ void UpdateScene(int ms)
 	glutPostRedisplay();
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
-	glutInit(&argc, ((char **)argv));
+	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE| GLUT_RGBA);
 	glutInitWindowPosition(0,0);
 	glutInitWindowSize(1000,700);
